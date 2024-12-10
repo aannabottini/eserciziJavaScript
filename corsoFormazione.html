@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <style>
+        table tr,th,td{
+            border-collapse: collapse;
+            border: 1px solid black;
+        }
+    </style>
+    <h1>Gestione iscrizioni Bottini Anna</h1>
+    <form id="form">
+        <p>ID Studente<input type="text" id="studente" name="IDstudente"></p>
+        <p>Ore di frequenza<input type="number" id="ore" name="oreFrequenza"></p>
+        
+        <br>
+
+        <button type="button" id="aggiungi" onclick="aggiungiIscrizione()">Aggiungi Iscrizione</button>
+        <button type="button" id="mostra" onclick="mostraIscrizioni()">Mostra Iscrizioni</button>
+    </form>
+    <div id="tabella">
+
+    </div>
+
+</body>
+<script>
+    tabella=`<table>
+                <tr>
+                    <th>ID Studente</th>
+                    <th>Ore di frequenza</th>
+                    <th>Quota totale</th>
+                </tr>`
+    let studenti=[];
+
+
+    
+    function aggiungiIscrizione(){
+
+        studente=document.getElementById("studente").value;
+        ore=document.getElementById("ore").value; 
+
+        function calcola(){
+                    let costo=15;
+                    if(ore>=1 && ore<=10)
+                        return costo*ore
+                    if(ore>=11 && ore<=20)
+                        return (costo*ore)-(costo*5/100)
+                    if(ore>20)
+                        return (costo*ore)-(costo*10/100)
+        }
+
+        let totale=calcola();
+        console.log(totale);    
+
+
+        let iscrizione={
+            studente: studente,
+            ore: ore,
+            totale: totale,
+        }
+
+        studenti.push(iscrizione);
+        console.log(studenti);
+    
+    }
+    
+
+    function mostraIscrizioni(){
+        let i=0;
+        for(i=0; i<studenti.length; i++){
+            tabella+=`<tr>
+                        <td>${studenti[i].studente} </td>
+                        <td>${studenti[i].ore} </td>
+                        <td>${studenti[i].totale}</td>
+                      </tr>`
+        }
+        tabella+=`</table>`
+        tabella.innerHTML=("tabella");
+
+        //let somma=0;
+        //if(totale>200){
+        //    somma+=totale;
+        //}
+        // `<p>Somma totale delle iscrizioni superiori a 200 euro: ${somma}</p>`
+        
+    }
+   
+</script>
+</html>
