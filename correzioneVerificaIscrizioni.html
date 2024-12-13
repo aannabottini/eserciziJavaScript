@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <style>
+        table tr,th,td{
+            border-collapse: collapse;
+            border: 1px solid black;
+        }
+    </style>
+    <h1>Gestione iscrizioni Bottini Anna</h1>
+    <form id="form">
+        <p>ID Studente<input type="text" id="studente" name="IDstudente"></p>
+        <p>Ore di frequenza<input type="number" min="0" id="ore" name="oreFrequenza"></p>
+        
+        <br>
+
+        <button type="button" id="aggiungi" onclick="aggiungiIscrizione()">Aggiungi Iscrizione</button>
+        <button type="button" id="mostra" onclick="mostraIscrizioni()">Mostra Iscrizioni</button>
+
+        <br>
+        
+        <div id="tabella">
+
+        </div>
+    </form>
+    
+
+</body>
+<script>
+    tabella=`<table>
+                <tr>
+                    <th>ID Studente</th>
+                    <th>Ore di frequenza</th>
+                    <th>Quota totale</th>
+                </tr>`
+    let studenti=[];
+    let totaleMaggiore=0;
+    
+    function aggiungiIscrizione(){
+
+        let totale;
+        let studente=document.getElementById("studente").value;
+        let ore=document.getElementById("ore").value; 
+
+        document.getElementById("studente").value="";
+        document.getElementById("ore").value="";
+
+        function verificaStudente(studente){
+            if(studente!="")
+                return true;
+            else
+                return false;
+        }
+
+        function verificaOre(ore){
+            if(ore>0 && ore!=null)
+                return true;
+            else
+                return false;
+        }
+
+        function calcola(){
+                    let costo=15;
+                    if(ore>=1 && ore<=10)
+                        return costo*ore
+                    if(ore>=11 && ore<=20)
+                        return (costo*ore)-(costo*5/100)
+                    if(ore>20)
+                        return (costo*ore)-(costo*10/100)
+        }
+
+        if(verificaStudente(studente)){
+            if(verificaOre(ore)){
+                totale=calcola();
+                let iscrizione={
+                    studente: studente,
+                    ore: ore,
+                    totale: totale,
+                }
+                studenti.push(iscrizione);
+                console.log(studenti);
+            }
+
+            else
+                alert("Ore errate!");
+        }
+        else
+            alert("Studente non inserito!");
+         
+        if(totale>200)
+            totaleMaggiore+=totale;
+
+        
+    
+    }
+    
+
+    function mostraIscrizioni(){
+        let i=0;
+        let paragrafo=`<p>Somma totale delle iscrizioni superiori a 200 euro: ${totaleMaggiore}</p>`
+        for(i=0; i<studenti.length; i++){
+            tabella+=`<tr>
+                        <td>${studenti[i].studente} </td>
+                        <td>${studenti[i].ore} </td>
+                        <td>${studenti[i].totale}</td>
+                      </tr>`
+        }
+        tabella+=`</table>`
+        document.getElementById("tabella").innerHTML=tabella+paragrafo;
+        tabella=`<table>
+                <tr>
+                    <th>ID Studente</th>
+                    <th>Ore di frequenza</th>
+                    <th>Quota totale</th>
+                </tr>` 
+        
+    }
+   
+</script>
+</html>
