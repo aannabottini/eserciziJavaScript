@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        while(true){
+            budget = prompt ("Inserisci budget iniziale (minimo 500): ");
+            if(budget>500)
+                break
+        }
+
+        console.log("Valore iniziale: ", budget);
+
+        function calcola_budget(){
+            budget=arguments[0];
+            for(let i=1; i<arguments.length; i++){
+                budget-=arguments[i];
+            }
+            return budget;
+        }
+
+        console.log("Prima chiamata calcola_budget(budget,30,20,50)");
+        budget=calcola_budget(budget, 30, 20, 50);
+        console.log("Budget rimanente: ", budget);
+
+        console.log("Seconda chiamata calcola_budget(budget,20,25)");
+        budget=calcola_budget(budget, 20, 25);
+        console.log("Budget rimanente: ", budget);
+
+        console.log("Terza chiamata calcola_budget(budget,30,20,50,10)");
+        budget=calcola_budget(budget, 30, 20, 50, 10);
+        console.log("Budget rimanente: ", budget);
+
+
+
+        
+        
+    </script>
+</body>
+</html>
