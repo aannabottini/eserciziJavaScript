@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <style>
+        table tr,th,td{
+            border-collapse: collapse;
+            border: 1px solid black;
+        }
+    </style>
+    <h1>Gestione prenotazioni di una biblioteca</h1>
+    <form id="form">
+        <p>ID Utente<input type="text" id="utente" name="IDutente"></p>
+        <p>Titolo del libro<input type="text" id="libro" name="nomeLibro"></p>
+        <p>Numero di giorni<input type="number" min="0" id="giorni" name="giorni"></p>
+
+        <br>
+
+        <button type="button" id="aggiungi" onclick="addBooking()">Aggiungi Prenotazione</button>
+    
+        <br>
+        
+        <div id="tabella"> <!--div per stampare la tabella-->
+
+        </div>
+        <div id="sommario"> <!--div per stampare il riepilogo dei giorni di prenotazione-->
+
+        </div>
+    </form>
+    
+</body>
+    <script>
+        let utenti=[]; //array che contiene tutte le prenotazioni
+        let sommario=[]; //array che contiene il numero di giorni di prenotazione per ogni utente diverso
+        let paragrafo=`<p>Totale giorni di prenotazione: </p>`;
+        tabella=`<table>
+                <tr>
+                    <th>ID Utente</th>
+                    <th>Titolo libro</th>
+                    <th>Giorni</th>
+                </tr>`
+
+        function addBooking(){
+            //prendo i dati inseriti nell'html
+            let utente = document.getElementById("utente").value;
+            let libro = document.getElementById("libro").value;
+            let giorni = (Number)(document.getElementById("giorni").value);
+
+            //valido gli input
+            if(utente=="" || libro=="" || giorni==0){
+                alert("Inserisci tutti i campi");
+                return;
+            }
+            if(giorni<0){
+                alert("Giorni negativi, riprova");
+                return;
+            }
+
+            //svuoto la casella di input per il prossimo inserimento
+            document.getElementById("utente").value="";
+            document.getElementById("libro").value="";
+            document.getElementById("giorni").value="";
+            
+            utenti.push({ //aggiungo all'array utenti un oggetto con i tre valori inseriti dalle caselle di input
+                utente: utente,
+                libro: libro,
+                giorni: giorni
+            });
+
+            function renderTable(){ //genera una tabella con i valori inseriti in input
+                for(let i=0; i<utenti.length; i++){ //cicla per la lunghezza dell'array utenti (ovvero il numero di prenotazioni effettuate)
+                    //incremento alla variabile tabella una nuova riga che contiene tutti e tre i valori (utente, libro, giorni)
+                    tabella+= `<tr> 
+                        <td>${utenti[i].utente} </td>
+                        <td>${utenti[i].libro} </td>
+                        <td>${utenti[i].giorni}</td>
+                      </tr>`
+                }
+                tabella+=`</table>` //chiude la tabella
+
+                document.getElementById("tabella").innerHTML=tabella; //associa al div di id tabella la variabile tabella
+                //rinizializzo tabella al valore iniziale (solo intestazione)
+                tabella=`<table>
+                    <tr>
+                        <th>ID Utente</th>
+                        <th>Titolo libro</th>
+                        <th>Giorni</th>
+                    </tr>`;
+            }
+
+            function updateSummary(){ //aggiorna il riepilogo dei giorni totali per ogni utente
+                
+                let presente=false; //presente==false vuol dire che l'utente che ho inserito non è ancora stato inserito nel sommario, presente==true l'utente è già stato inserito
+
+                for(let i=0; i<sommario.length; i++){ //cicla per la lunghezza dell'array sommario (ovvero il numero di utenti diversi inseriti)
+                    if(utente==sommario[i].utente){ //controlla se l'utente che ho inserito per ultimo è già presente nel sommario
+                        presente=true; 
+                        sommario[i].giorni+=giorni; //incrementa i giorni di quel determinato utente
+                    }
+                }
+
+                if(presente==false){ //se è falso aggiunge un nuovo oggetto all'array sommario, che contiene l'utente e il numero di giorni 
+                    sommario.push({utente: utente,
+                                giorni: giorni});
+                }
+
+                for(let i=0; i<sommario.length; i++){ //cicla per la lunghezza dell'array sommario (ovvero il numero di utenti diversi inseriti)
+                    paragrafo+=`<p>Utente ${sommario[i].utente}: ${sommario[i].giorni} giorni </p>`; //incrementa alla variabile paragrafo una nuova riga contenente i valori per ogni utente
+                }
+
+                document.getElementById("sommario").innerHTML=paragrafo; //associa al div di id sommario la variabile paragrafo
+
+                //rinizializzo paragrafo al valore iniziale (solo intestazione)
+                paragrafo=`<p>Totale giorni di prenotazione: </p>`; 
+             
+            }
+            
+            //richiamo funzioni
+            renderTable();
+            updateSummary();
+
+        }
+    </script>
+</html>
