@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+
+        let scorteIniziali = [
+            {prodotto: "mele", quantita: 100},
+            {prodotto: "arance", quantita: 50}
+        ]
+
+        let operazioni = [
+            {operazione: "rifornimento", prodotto: "arance", quantita: 20},
+            {operazione: "vendita", prodotto: "mele", quantita: 30},  
+            {operazione: "vendita", prodotto: "mele", quantita: 20}      
+        ]
+
+        function gestisciMagazzino(scorteIniziali, operazioni){
+            //funzione annidata per cercare un prodotto nell'array delle scorte
+            function trovaProdotto(nomeProdotto){
+                let scorta;
+                for(let j=0; j<operazioni.lenght; j++){
+                    for(let i=0; i<scorteIniziali.lenght; i++){
+                        if(operazioni[j].operazione=="vendita"){
+                            if(operazioni[j].prodotto==scorteIniziali[i].prodotto){
+                                if(operazioni[j].quantita>scorteIniziali[i].quantita){ 
+                                    scorta=scorteIniziali[i].quantita-operazioni[j].quantita;
+                                }
+                                else{console.log("Risorse non sufficienti")}
+                            }
+                            else{scorteIniziali[i].push({prodotto: operazioni[j].prodotto, quantita: operazioni[j].quantita})}
+                        }
+                        else if(operazioni[j].operazione=="rifornimento"){
+                            if(operazioni[j].prodotto==scorteIniziali[i].prodotto){
+                                scorta=scorteIniziali[i].quantita+operazioni[j].quantita;
+                            }
+                        }
+                    }
+                }
+                console.log(operazioni)
+                console.log(scorta)
+                return scorta;
+            }
+            function applicaOperazione(operazione){
+                let prodotto=trovaProdotto(operazione.prodotto);
+                if(prodotto!=false){
+                    if(operazione.operazione=="rifornimento"){
+                        prodotto.quantita+=operazione.quantita
+                        scorteIniziali.quantita+=operazione.quantita
+                    }
+                    else{
+                        if(operazioni[j].quantita>scorteIniziali[i].quantita){
+                            scorteIniziali[i].quantita-=operazioni[j].quantita;
+                        }
+                        else{
+                            console.log("Errore")
+                        }
+                    }
+                }
+            }
+            trovaProdotto("mele")
+            for(let j=0; j<operazioni.lenght; j++){
+                applicaOperazione(operazioni[j]);
+            }
+        }
+
+        gestisciMagazzino(scorteIniziali, operazioni);
+
+    </script>
+</body>
+
+</html>
